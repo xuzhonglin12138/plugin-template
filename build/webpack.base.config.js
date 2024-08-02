@@ -1,11 +1,16 @@
 const path = require('path')
 const webpack = require('webpack')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const ESLintPlugin = require('eslint-webpack-plugin')
+const TerserPlugin = require("terser-webpack-plugin");
+const { getEntryFile } = require('./utils');
+
 const NODE_ENV = process.env.NODE_ENV
+
+
 module.exports = {
-  entry: NODE_ENV !== 'development' ? path.join(__dirname,'..','src','moudle.js') :  path.join(__dirname,'..','src','index.js'),
+  entry: getEntryFile(),
+  context: path.join(process.cwd(), 'src'),
   module: {
     rules: [
       {
@@ -35,9 +40,13 @@ module.exports = {
         test: /\.less$/,
         exclude: /node_modules/,
         use: [
-          NODE_ENV === 'development' ? 'style-loader' : MiniCssExtractPlugin.loader,
+          NODE_ENV === 'development'
+            ?
+            'style-loader'
+            :
+            MiniCssExtractPlugin.loader,
           {
-            loader:'css-loader',
+            loader: 'css-loader',
             options: {
               modules: true
             }
@@ -48,28 +57,30 @@ module.exports = {
       }
     ]
   },
-  plugins:[
+  plugins: [
     new ESLintPlugin({
-      extensions: ['js','jsx']
+      extensions: ['js', 'jsx']
     }),
     new webpack.ProgressPlugin(),
-    new HtmlWebpackPlugin({
-      // title: NODE_ENV === 'development' ? 'Carl的React16脚手架-开发模式' : 'Carl的React16脚手架-生产模式',
-      template: path.join(__dirname,'..','public','index.html')
-    })
   ],
   resolve: {
     alias: {
-      "@": path.join(__dirname,'..','src')
+      "@": path.join(__dirname, '..', 'src')
     },
-    extensions: ['.js','.jsx','.json','...'] 
+    extensions: ['.js', '.jsx', '.json']
   },
   optimization: {
-    runtimeChunk: 'single'
+    runtimeChunk: false,
+    minimize: true,
+    minimizer: [new TerserPlugin({
+        extractComments: false
+    })],
+
   },
   output: {
     clean: true,
-    path: path.join(__dirname,'..','dist'),
-    filename: NODE_ENV === 'development' ? '[name].js' : '[name].js'
+    path: path.join(__dirname, '..', 'dist'),
+    filename: '[name].js',
+    assetModuleFilename: 'images/[hash][ext][query]',
   }
 }

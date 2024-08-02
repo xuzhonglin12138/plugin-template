@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDom from 'react-dom'
-import App from './components/apps/index'
+import App from './page/app/index'
+import { AppPagePlugin  } from 'xu-demo-data'
 
-ReactDom.render(<App/>, document.querySelector('#root'))
+export const AppPagePlugin = new AppPagePlugin().setRootPage(App)

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Button } from 'antd';
 import styles from './index.less'
 import avatar from '../../assets/images/avatar.png';
-import home from '../../assets/images/home.svg'
+import home from '../../assets/images/home.svg';
 export default class index extends Component {
   constructor(props) {
     super(props);

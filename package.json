@@ -25,6 +25,7 @@
     "babel-loader": "^8.2.2",
     "babel-plugin-import": "^1.13.8",
     "cache-loader": "^4.1.0",
+    "copy-webpack-plugin": "^10.0.0",
     "core-js": "3",
     "cross-env": "^7.0.3",
     "css-loader": "^6.3.0",
@@ -45,6 +46,7 @@
     "postcss-loader": "^6.1.1",
     "postcss-preset-env": "^6.7.0",
     "prettier": "^2.4.1",
+    "replace-in-file-webpack-plugin": "^1.0.6",
     "sass-loader": "^12.1.0",
     "style-loader": "^3.3.0",
     "thread-loader": "^3.0.4",
@@ -52,14 +54,16 @@
     "webpack-bundle-analyzer": "^4.4.2",
     "webpack-cli": "^4.8.0",
     "webpack-dev-server": "^4.2.1",
-    "webpack-merge": "^5.8.0"
+    "webpack-merge": "^5.8.0",
+    "terser-webpack-plugin": "^5.3.10"
   },
   "dependencies": {
     "@babel/runtime": "^7.15.4",
     "@babel/runtime-corejs3": "^7.15.4",
+    "antd": "3.19.1",
     "axios": "^0.24.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "antd": "3.19.1"
+    "xu-demo-data": "1.0.0"
   }
 }
