@@ -4,28 +4,52 @@ const baseConfig = require('./webpack.base.config')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const  ReplaceInFileWebpackPlugin = require('replace-in-file-webpack-plugin');
+const ReplaceInFileWebpackPlugin = require('replace-in-file-webpack-plugin');
 const { hasReadme, getPackageJsonInfo, getPluginId, getTodayDate } = require('./utils');
 
 const REPORT = process.env.REPORT
 const prodConfig = {
   mode: 'production',
+  devtool: 'eval-source-map',
+  output: {
+    clean: true,
+    path: path.join(__dirname, '..', 'dist'),
+    filename: '[name].js',
+    library: {
+      type: 'amd',
+    },
+  },
+  module: {
+    rules: [
+      {
+        test: /\.less$/,
+        exclude: /node_modules/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          'less-loader'
+        ]
+      }
+    ]
+  },
   externals: [
+    'lodash',
+    'moment',
     'react',
+    'antd',
     'react-dom',
-    'antd'
+    'xu-demo-data'
   ],
   plugins: [
     new MiniCssExtractPlugin({
-      filename: 'styles/[name].[contenthash].css', 
-      chunkFilename: 'styles/[id].[contenthash].css',
+      filename: '[name].[contenthash].css',
     }),
     new CopyWebpackPlugin({
       patterns: [
         { from: hasReadme() ? 'README.md' : '../README.md', to: '.', force: true },
         { from: 'pluginData.json', to: '.' },
-        { from: '../LICENSE', to: '.' ,noErrorOnMissing: true },
-        { from: '../CHANGELOG.md', to: '.', force: true, noErrorOnMissing: true  },
+        { from: '../LICENSE', to: '.', noErrorOnMissing: true },
+        { from: '../CHANGELOG.md', to: '.', force: true, noErrorOnMissing: true },
         { from: '**/*.json', to: '.' }
       ],
     }),
@@ -51,7 +75,8 @@ const prodConfig = {
     ]),
   ]
 }
-if(REPORT) {
+
+if (REPORT) {
   prodConfig.plugins.push(new BundleAnalyzerPlugin())
 }
 

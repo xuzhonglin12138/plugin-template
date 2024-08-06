@@ -49,21 +49,23 @@
     "replace-in-file-webpack-plugin": "^1.0.6",
     "sass-loader": "^12.1.0",
     "style-loader": "^3.3.0",
+    "terser-webpack-plugin": "^5.3.10",
     "thread-loader": "^3.0.4",
     "webpack": "^5.53.0",
     "webpack-bundle-analyzer": "^4.4.2",
     "webpack-cli": "^4.8.0",
     "webpack-dev-server": "^4.2.1",
-    "webpack-merge": "^5.8.0",
-    "terser-webpack-plugin": "^5.3.10"
+    "webpack-merge": "^5.8.0"
   },
   "dependencies": {
     "@babel/runtime": "^7.15.4",
     "@babel/runtime-corejs3": "^7.15.4",
+    "@swc/core": "^1.7.6",
     "antd": "3.19.1",
     "axios": "^0.24.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "swc-loader": "^0.2.6",
     "xu-demo-data": "1.0.0"
   }
 }

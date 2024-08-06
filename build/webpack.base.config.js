@@ -3,7 +3,7 @@ const webpack = require('webpack')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const ESLintPlugin = require('eslint-webpack-plugin')
 const TerserPlugin = require("terser-webpack-plugin");
-const { getEntryFile } = require('./utils');
+const { getEntryFile, getPluginId } = require('./utils');
 
 const NODE_ENV = process.env.NODE_ENV
 
@@ -11,12 +11,23 @@ const NODE_ENV = process.env.NODE_ENV
 module.exports = {
   entry: getEntryFile(),
   context: path.join(process.cwd(), 'src'),
+  cache: {
+    type: 'filesystem',
+    buildDependencies: {
+      config: [__filename],
+    },
+  },
   module: {
     rules: [
       {
         test: /\.(png|jpe?g|gif|svg)$/,
         exclude: /node_modules/,
         type: 'asset/resource',
+        generator: NODE_ENV === 'development' ? {} : {
+          publicPath: `plugins/${getPluginId()}/img/`,
+          outputPath: 'img/',
+          filename: NODE_ENV === 'development' ? '[hash][ext]' : '[name][ext]',
+        },
       },
       {
         test: /\.css$/,
@@ -26,34 +37,33 @@ module.exports = {
         test: /\.(woff|woff2|eot|ttf|otf)(\?v=\d+\.\d+\.\d+)?$/,
         exclude: /node_modules/,
         type: 'asset/resource',
+        generator: NODE_ENV === 'development' ? {} : {
+          publicPath: `plugins/${getPluginId()}/fonts`,
+          outputPath: 'fonts/',
+          filename: NODE_ENV === 'development' ? '[hash][ext]' : '[name][ext]',
+        },
       },
       {
-        test: /\.jsx?$/,
-        exclude: /node_modules/,
-        use: [
-          'cache-loader',
-          'thread-loader',
-          'babel-loader'
-        ]
-      },
-      {
-        test: /\.less$/,
-        exclude: /node_modules/,
-        use: [
-          NODE_ENV === 'development'
-            ?
-            'style-loader'
-            :
-            MiniCssExtractPlugin.loader,
-          {
-            loader: 'css-loader',
-            options: {
-              modules: true
-            }
+        exclude: /(node_modules)/,
+        test: /\.[jt]sx?$/,
+        use: [{
+          loader: 'swc-loader',
+          options: {
+            jsc: {
+              baseUrl: path.resolve(__dirname, 'src'),
+              target: 'es2015',
+              loose: false,
+              parser: {
+                syntax: 'ecmascript', // 将 'typescript' 改为 'ecmascript'
+                jsx: true,            // 如果需要支持 JSX，将 'tsx' 改为 'jsx'
+                decorators: false,
+                dynamicImport: true,
+              },
+            },
           },
-          'postcss-loader',
-          'less-loader'
-        ]
+        },
+        'babel-loader'
+      ]
       }
     ]
   },
@@ -67,20 +77,16 @@ module.exports = {
     alias: {
       "@": path.join(__dirname, '..', 'src')
     },
-    extensions: ['.js', '.jsx', '.json']
+    extensions: ['.js', '.jsx', '.json'],
+    modules: [path.resolve(process.cwd(), 'src'), 'node_modules'],
+    unsafeCache: true,
   },
   optimization: {
     runtimeChunk: false,
     minimize: true,
     minimizer: [new TerserPlugin({
-        extractComments: false
+      extractComments: false
     })],
 
-  },
-  output: {
-    clean: true,
-    path: path.join(__dirname, '..', 'dist'),
-    filename: '[name].js',
-    assetModuleFilename: 'images/[hash][ext][query]',
   }
 }
