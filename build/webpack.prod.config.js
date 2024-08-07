@@ -36,7 +36,6 @@ const prodConfig = {
     'lodash',
     'moment',
     'react',
-    'antd',
     'react-dom',
     'xu-demo-data'
   ],

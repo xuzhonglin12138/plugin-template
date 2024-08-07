@@ -15,7 +15,8 @@ module.exports = {
         "sourceType": "module"
     },
     "rules": {
-        "react/jsx-uses-react": "error" //解决引入React时报 未引用变量 的错误 
+        "react/jsx-uses-react": "error", //解决引入React时报 未引用变量 的错误 
+        'react/prop-types': 'off',
         //"react/jsx-uses-vars":"error" 
         //"react/jsx-uses-react": "off",
         //"react/react-in-jsx-scope": "off"

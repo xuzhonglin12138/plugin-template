@@ -11,12 +11,12 @@ const NODE_ENV = process.env.NODE_ENV
 module.exports = {
   entry: getEntryFile(),
   context: path.join(process.cwd(), 'src'),
-  cache: {
-    type: 'filesystem',
-    buildDependencies: {
-      config: [__filename],
-    },
-  },
+  // cache: {
+  //   type: 'filesystem',
+  //   buildDependencies: {
+  //     config: [__filename],
+  //   },
+  // },
   module: {
     rules: [
       {

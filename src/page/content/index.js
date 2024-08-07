@@ -1,15 +1,16 @@
 import React, { Component } from 'react'
+import { Button, Input } from 'antd';
 import avatar from '../../assets/images/avatar.png';
 import home from '../../assets/images/home.svg';
-import { Button, Input } from 'antd';
 import './index.css';
-export default class index extends Component {
+class index extends Component {
   constructor(props) {
     super(props);
     this.state = {
     }
   }
   render() {
+    console.log(this.props);
     return (
       <div className='hello'>
         <div>hello,这里是最基础的demo</div>
@@ -30,3 +31,5 @@ export default class index extends Component {
     )
   }
 }
+
+export default index
