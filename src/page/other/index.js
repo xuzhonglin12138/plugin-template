@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Table } from "antd";
 import './index.css';
+
 export default class index extends Component {
   constructor(props) {
     super(props);
@@ -37,21 +38,21 @@ export default class index extends Component {
     const dataSource = [
       {
         key: '1',
-        name: '胡彦斌',
+        name: '刘亦菲',
         age: 32,
-        address: '西湖区湖底公园1号',
+        address: '北京市东城区东湖别墅111111',
       },
       {
         key: '2',
-        name: '胡彦祖',
+        name: '宋祖儿',
         age: 42,
-        address: '西湖区湖底公园1号',
+        address: '北京市东城区东湖别墅111111',
       },
     ];
     return (
-      <div className='Separate_example_content'>
-        <h1>======平台管理插件========</h1>
-        <p>平台管理插件,负责审核用户端发过来的请求</p>
+      <div className='Separate_example_other'>
+        <h1>======团队管理插件========</h1>
+        <p>团队管理插件,负责向平台端发起审核请求</p>
         <Table dataSource={dataSource} columns={columns} />;
       </div>
     )

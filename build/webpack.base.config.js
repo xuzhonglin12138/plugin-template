@@ -54,8 +54,8 @@ module.exports = {
               target: 'es2015',
               loose: false,
               parser: {
-                syntax: 'ecmascript', // 将 'typescript' 改为 'ecmascript'
-                jsx: true,            // 如果需要支持 JSX，将 'tsx' 改为 'jsx'
+                syntax: 'ecmascript', 
+                jsx: true, 
                 decorators: false,
                 dynamicImport: true,
               },
