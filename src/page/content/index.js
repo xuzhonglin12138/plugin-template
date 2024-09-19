@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Table } from "antd";
-import './index.css';
+import styles from './index.less';
 export default class index extends Component {
   constructor(props) {
     super(props);
@@ -49,7 +49,7 @@ export default class index extends Component {
       },
     ];
     return (
-      <div className='Separate_example_content'>
+      <div className={styles.Separate_example_content}>
         <h1>======平台管理插件========</h1>
         <p>平台管理插件,负责审核用户端发过来的请求</p>
         <Table dataSource={dataSource} columns={columns} />;

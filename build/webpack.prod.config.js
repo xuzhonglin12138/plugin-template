@@ -20,17 +20,21 @@ const prodConfig = {
     },
   },
   module: {
-    rules: [
-      {
-        test: /\.less$/,
-        exclude: /node_modules/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          'css-loader',
-          'less-loader'
-        ]
-      }
-    ]
+    rules: [{
+      test: /\.less$/,
+      exclude: /node_modules/,
+      use: [
+        'style-loader',
+        {
+          loader: 'css-loader',
+          options: {
+            modules: true
+          }
+        },
+        'postcss-loader',
+        'less-loader'
+      ]
+    }]
   },
   externals: [
     'lodash',

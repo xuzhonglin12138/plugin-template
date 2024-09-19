@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Table } from "antd";
-import './index.css';
+import styles from './index.less';
 
 export default class index extends Component {
   constructor(props) {
@@ -50,7 +50,7 @@ export default class index extends Component {
       },
     ];
     return (
-      <div className='Separate_example_other'>
+      <div className={styles.Separate_example_other}>
         <h1>======团队管理插件========</h1>
         <p>团队管理插件,负责向平台端发起审核请求</p>
         <Table dataSource={dataSource} columns={columns} />;
