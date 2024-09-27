@@ -12,8 +12,8 @@ export default class index extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      colorPrimary: this.props?.baseInfo?.colorPrimary || '#1677ff',
-      currentLocale: this.props?.baseInfo?.currentLocale || 'zh',
+      colorPrimary: this.props?.colorPrimary || '#1677ff',
+      currentLocale: this.props?.currentLocale || 'zh',
       initDone: false
     }
   }
@@ -50,12 +50,12 @@ export default class index extends Component {
             type="card"
             items={[
               {
-                label: "主页面",
+                label: intl.get('root'),
                 key: 'Content',
                 children: <Content {...this.props} />,
               },
               {
-                label: "辅页面",
+                label: intl.get('other'),
                 key: 'Other',
                 children: <Other {...this.props} />,
               }

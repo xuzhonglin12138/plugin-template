@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Table } from "antd";
-import WithModifiedProps from '../../components/withModifiedProps'
 import styles from './index.less';
 
  class index extends Component {
@@ -59,4 +58,4 @@ import styles from './index.less';
     )
   }
 }
-export default WithModifiedProps(index)
+export default index
