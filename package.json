@@ -59,6 +59,7 @@
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.5.1",
     "@babel/runtime": "^7.15.4",
     "@babel/runtime-corejs3": "^7.15.4",
     "@swc/core": "^1.7.6",
@@ -67,6 +68,7 @@
     "js-cookie": "^3.0.5",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-intl-universal": "^2.11.3",
     "swc-loader": "^0.2.6",
     "xu-demo-data": "2.0.0"
   }

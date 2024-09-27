@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { Table } from "antd";
+import WithModifiedProps from '../../components/withModifiedProps'
 import styles from './index.less';
 
-export default class index extends Component {
+ class index extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -58,3 +59,4 @@ export default class index extends Component {
     )
   }
 }
+export default WithModifiedProps(index)

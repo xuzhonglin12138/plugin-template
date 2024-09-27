@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
-import { ConfigProvider, Tabs } from 'antd'
-import Content from './content/index'
-import Other from './other/index'
+import { ConfigProvider } from 'antd'
+import Content from '../page/content/index'
 import intl from 'react-intl-universal';
 const locales = {
   "en": require('../locales/en-US.json'),
@@ -30,9 +29,6 @@ export default class index extends Component {
         this.setState({ initDone: true });
       });
   }
-  onChange = (key) => {
-    console.log(key);
-  };
   render() {
     const { colorPrimary, currentLocale } = this.state
     return (
@@ -42,28 +38,11 @@ export default class index extends Component {
             colorPrimary: colorPrimary
           }
         }}
-        locale={currentLocale == 'zh' ? 'cn': 'en'}
+        locale={currentLocale == 'zh' ? 'cn' : 'en'}
       >
         {this.state.initDone &&
-          <Tabs
-            onChange={this.onChange}
-            type="card"
-            items={[
-              {
-                label: "主页面",
-                key: 'Content',
-                children: <Content {...this.props} />,
-              },
-              {
-                label: "辅页面",
-                key: 'Other',
-                children: <Other {...this.props} />,
-              }
-            ]}
-          />
-
+          <Content {...this.props} />
         }
-
       </ConfigProvider>
     )
   }
