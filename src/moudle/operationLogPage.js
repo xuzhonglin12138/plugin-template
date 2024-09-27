@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { ConfigProvider } from 'antd'
-import Other from '../page/other/index'
+import OperationLogPage from '../page/OperationLogPage/index'
 import intl from 'react-intl-universal';
 const locales = {
   "en": require('../locales/en-US.json'),
@@ -41,7 +41,7 @@ export default class index extends Component {
         locale={currentLocale == 'zh' ? 'cn' : 'en'}
       >
         {this.state.initDone &&
-          <Other {...this.props} />
+          <OperationLogPage {...this.props} />
         }
       </ConfigProvider>
     )

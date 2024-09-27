@@ -1,7 +1,12 @@
 import React, { Component } from 'react'
 import { ConfigProvider, Tabs } from 'antd'
-import Content from './content/index'
-import Other from './other/index'
+import AppBackUpPage from './AppBackUpPage/index'
+import CustomizationPage from './CustomizationPage/index'
+import EntryLogPage from './EntryLogPage/index'
+import OperationLogPage from './OperationLogPage/index'
+import PackageUploadPage from './PackageUploadPage/index'
+import PermissionPage from './PermissionPage/index'
+
 import intl from 'react-intl-universal';
 const locales = {
   "en": require('../locales/en-US.json'),
@@ -42,7 +47,7 @@ export default class index extends Component {
             colorPrimary: colorPrimary
           }
         }}
-        locale={currentLocale == 'zh' ? 'cn': 'en'}
+        locale={currentLocale == 'zh' ? 'cn' : 'en'}
       >
         {this.state.initDone &&
           <Tabs
@@ -50,14 +55,34 @@ export default class index extends Component {
             type="card"
             items={[
               {
-                label: "主页面",
-                key: 'Content',
-                children: <Content {...this.props} />,
+                label: "AppBackUpPage",
+                key: 'AppBackUpPage',
+                children: <AppBackUpPage {...this.props} />,
               },
               {
-                label: "辅页面",
-                key: 'Other',
-                children: <Other {...this.props} />,
+                label: "CustomizationPage",
+                key: 'CustomizationPage',
+                children: <CustomizationPage {...this.props} />,
+              },
+              {
+                label: "EntryLogPage",
+                key: 'EntryLogPage',
+                children: <EntryLogPage {...this.props} />,
+              },
+              {
+                label: "OperationLogPage",
+                key: 'OperationLogPage',
+                children: <OperationLogPage {...this.props} />,
+              },
+              {
+                label: "PackageUploadPage",
+                key: 'PackageUploadPage',
+                children: <PackageUploadPage {...this.props} />,
+              },
+              {
+                label: "PermissionPage",
+                key: 'PermissionPage',
+                children: <PermissionPage {...this.props} />,
               }
             ]}
           />

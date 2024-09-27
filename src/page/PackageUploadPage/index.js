@@ -52,7 +52,7 @@ import styles from './index.less';
     ];
     return (
       <div className={styles.Separate_example_other}>
-        <h1>======团队管理插件========</h1>
+        <h1>======构建版本上传========</h1>
         <p>团队管理插件,负责向平台端发起审核请求</p>
         <Table dataSource={dataSource} columns={columns} />;
       </div>
