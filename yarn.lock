@@ -7472,10 +7472,10 @@ ws@^8.13.0:
   resolved "https://registry.npmmirror.com/ws/-/ws-8.18.0.tgz"
   integrity sha512-8VbfWfHLbbwu3+N6OKsOMpBdT4kXPDDB9cJk2bJ6mh9ucxdlnNvH1e+roYkKmN9Nxw2yjz7VzeO9oOz2zJ04Pw==
 
-xu-demo-data@2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/xu-demo-data/-/xu-demo-data-2.0.0.tgz#132be89d23d76a6ef3728573e70a9826a1c2d38c"
-  integrity sha512-EmpiE+5K5gjZinUIxtctf1hpswARpEtGaFk544mOYv8BT6TtHuNj7D7kbTOWVlYC78DuvBtdahJrKOzzuc3ETw==
+xu-demo-data@3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/xu-demo-data/-/xu-demo-data-3.0.1.tgz#49c13efc8e9b53fb2a930720b83468086f17fef8"
+  integrity sha512-aR9OwtaVyd5IQk8bD28LGZrrXAXwH1CBawPd9FIqpCuXBZnCcdEF0vkK1QPlayRX6o+KB6aV62GF8v5QiJpzVQ==
 
 y18n@^5.0.5:
   version "5.0.8"

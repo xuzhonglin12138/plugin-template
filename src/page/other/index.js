@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Table } from "antd";
 import styles from './index.less';
 
  class index extends Component {
@@ -13,47 +12,11 @@ import styles from './index.less';
 
   }
   render() {
-    const columns = [
-      {
-        title: '姓名',
-        dataIndex: 'name',
-        key: 'name',
-      },
-      {
-        title: '年龄',
-        dataIndex: 'age',
-        key: 'age',
-      },
-      {
-        title: '住址',
-        dataIndex: 'address',
-        key: 'address',
-      },
-      {
-        title: '操作',
-        dataIndex: 'handle',
-        key: 'handle',
-      },
-    ];
-    const dataSource = [
-      {
-        key: '1',
-        name: '刘亦菲',
-        age: 32,
-        address: '北京市东城区东湖别墅111111',
-      },
-      {
-        key: '2',
-        name: '宋祖儿',
-        age: 42,
-        address: '北京市东城区东湖别墅111111',
-      },
-    ];
     return (
-      <div className={styles.Separate_example_other}>
-        <h1>======团队管理插件========</h1>
-        <p>团队管理插件,负责向平台端发起审核请求</p>
-        <Table dataSource={dataSource} columns={columns} />;
+      <div className={styles.Separate_example_root}>
+        <h1>======团队和组件========</h1>
+        <h5>当前是组件</h5>
+        <p>团队和组件团队和组件团队和组件团队和组件团队和组件团队和组件团队和组件</p>
       </div>
     )
   }
