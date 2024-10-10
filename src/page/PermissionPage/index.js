@@ -1,62 +1,230 @@
-import React, { Component } from 'react'
-import { Table } from "antd";
-import WithModifiedProps from '../../components/withModifiedProps'
+import { Button, Empty, Spin, Menu, Card } from 'antd';
+import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import React, { Fragment, PureComponent } from 'react';
+import ConfirmModal from '../../components/ConfirmModal';
+import PermissionsForm from '../../components/PermissionsFrom'
 import styles from './index.less';
-
- class index extends Component {
+export default class RoleList extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      pluginInfo: {}
-    }
+      showAddRole: false,
+      roleList: [],
+      rolesID: null,
+      rolesLoading: true,
+      permissions: null,
+      permissionsLoading: true,
+      language: true,
+      applist: []
+    };
   }
-  componentDidMount() {
 
+  componentDidMount() {
+    this.loadPermissions();
+    this.loadTeamRoles();
+    this.fetchTeamApps();
   }
+
+  onDelRole = (item) => {
+    this.setState({ deleteRole: item });
+  };
+
+  fetchTeamApps = () => {
+    const { baseInfo, dispatch } = this.props
+    dispatch && dispatch({
+      type: 'global/fetchGroups',
+      payload: {
+        team_name: baseInfo?.team_name,
+        region_name: baseInfo?.region_name
+      },
+      callback: res => {
+        this.setState({
+          applist: res.list || []
+        })
+      }
+    });
+  };
+
+  showAddRole = () => {
+    this.setState({ showAddRole: true });
+  };
+
+  hideAddRole = (ID) => {
+    this.setState({ showAddRole: false });
+    if (ID && typeof ID === 'number') {
+      return this.loadTeamRoles(ID);
+    }
+  };
+
+  handleDelRole = () => {
+    const { baseInfo, dispatch } = this.props
+
+    dispatch && dispatch({
+      type: 'teamControl/removeRole',
+      payload: {
+        team_name: baseInfo?.team_name,
+        role_id: this.state.deleteRole.ID
+      },
+      callback: () => {
+        this.hideDelRole();
+        this.loadTeamRoles();
+      }
+    });
+  };
+
+  hideDelRole = () => {
+    this.setState({ deleteRole: null });
+  };
+
+  loadTeamRoles = (rolesID = false) => {
+    const { dispatch, baseInfo } = this.props;
+    dispatch && dispatch({
+      type: 'teamControl/fetchTeamRoles',
+      payload: {
+        team_name: baseInfo?.team_name,
+      },
+      callback: (res) => {
+        if (res && res.status_code === 200) {
+          let ID = null;
+          if (res.list && res.list.length > 0) {
+            ID = res.list[0].ID;
+          }
+          this.setState({
+            roleList: res.list,
+            rolesID: rolesID || ID,
+            rolesLoading: false
+          });
+        }
+      }
+    });
+  };
+
+  loadPermissions = () => {
+    const { dispatch, index } = this.props;
+    dispatch && dispatch({
+      type: 'global/fetchPermissions',
+      payload: {
+        tenant_id: index?.overviewInfo?.team_id
+      },
+      callback: (res) => {
+        if (res && res.status_code === 200) {
+          this.setState({
+            permissions: res.bean || [],
+            permissionsLoading: false
+          });
+        }
+      }
+    });
+  };
+
+  selectKey = ({ key }) => {
+    this.setState({
+      rolesID: key
+    });
+  };
+
   render() {
-    const columns = [
-      {
-        title: '姓名',
-        dataIndex: 'name',
-        key: 'name',
+    const {
+      baseInfo,
+      formatMessage,
+      componentData: {
+        rolePermissions: { isCreate, isDelete, isEdit }
       },
-      {
-        title: '年龄',
-        dataIndex: 'age',
-        key: 'age',
-      },
-      {
-        title: '住址',
-        dataIndex: 'address',
-        key: 'address',
-      },
-      {
-        title: '操作',
-        dataIndex: 'handle',
-        key: 'handle',
-      },
-    ];
-    const dataSource = [
-      {
-        key: '1',
-        name: '刘亦菲',
-        age: 32,
-        address: '北京市东城区东湖别墅111111',
-      },
-      {
-        key: '2',
-        name: '宋祖儿',
-        age: 42,
-        address: '北京市东城区东湖别墅111111',
-      },
-    ];
+      dispatch,
+    } = this.props;
+    const {
+      roleList,
+      rolesLoading,
+      permissions,
+      permissionsLoading,
+      showAddRole,
+      rolesID,
+      deleteRole,
+      language,
+      applist
+    } = this.state;
+    const roles = roleList && roleList.length > 0;
     return (
-      <div className={styles.Separate_example_other}>
-        <h1>======权限版本========</h1>
-        <p>团队管理插件,负责向平台端发起审核请求</p>
-        <Table dataSource={dataSource} columns={columns} />;
-      </div>
-    )
+      <Fragment>
+        <div className={styles.permissionBox}>
+          <Card
+            title={formatMessage({ id: 'teamManage.tabs.role.title' })}
+            bordered
+            className={styles.systemRoleWrapper}
+          >
+            <Spin spinning={rolesLoading}>
+              {roleList && roleList.length > 0 && (
+                <Menu
+                  mode="inline"
+                  selectedKeys={[`${rolesID}`]}
+                  onClick={this.selectKey}
+                  style={{ borderTop: 0, borderInlineEnd: 0 }}
+                >
+                  {roleList.map((item) => {
+                    const { ID, name } = item;
+                    return (
+                      <Menu.Item key={ID} disabled={showAddRole}>
+                        <div>{baseInfo?.roleUtil?.actionMap(name, language)}</div>
+                        {isDelete && (
+                          <DeleteOutlined
+                            style={{ color: '#ff4d4f', marginLeft: '10px' }}
+                            onClick={() => this.onDelRole(item)}
+                          />
+                        )}
+                      </Menu.Item>
+                    );
+                  })}
+                </Menu>
+              )}
+            </Spin>
+            <div className={styles.systemRoleBtn}>
+              {!showAddRole && isCreate && (
+                <Button type="primary" icon={<PlusOutlined />} onClick={this.showAddRole}>
+                  {formatMessage({ id: 'teamManage.tabs.role.btn.add' })}
+                </Button>
+              )}
+            </div>
+          </Card>
+          <Card
+            title={formatMessage({ id: 'teamManage.tabs.role.list.permissions' })}
+            bordered
+            className={styles.authSettingBody}
+          >
+            {!roles && permissionsLoading && !showAddRole ? (
+              <div className={styles.noRole}>
+                <Empty />
+              </div>
+            ) : (
+              <PermissionsForm
+                key={permissions}
+                appList={applist}
+                baseInfo={baseInfo}
+                dispatch={dispatch}
+                formatMessage={formatMessage}
+                isEdit={isEdit}
+                isCreate={isCreate}
+                isAddRole={showAddRole}
+                onCancelAddRole={this.hideAddRole}
+                rolesID={rolesID}
+                roleList={roleList}
+                permissions={permissions}
+                permissionsLoading={permissionsLoading}
+              />
+            )}
+          </Card>
+
+        </div>
+
+        {deleteRole && (
+          <ConfirmModal
+            onOk={this.handleDelRole}
+            title={formatMessage({ id: 'confirmModal.role.delete.title' })}
+            subDesc={formatMessage({ id: 'confirmModal.delete.strategy.subDesc' })}
+            desc={formatMessage({ id: 'confirmModal.delete.role.desc' }, { deleteRole: deleteRole.name })}
+            onCancel={this.hideDelRole}
+          />
+        )}
+      </Fragment>
+    );
   }
 }
-export default WithModifiedProps(index)

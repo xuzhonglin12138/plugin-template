@@ -1,0 +1,48 @@
+.AuthModuleWrap {
+  height: calc(100vh - 394px);
+  overflow: auto;
+  width: 800px;
+}
+
+.systemFormBtn {
+  height: 56px;
+  border-top: 1px solid #e3e3e3;
+  text-align: right;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 24px;
+}
+
+.tree {
+  border: 1px solid #e3e3e3;
+  padding: 12px 20px 12px 12px;
+
+  :global {
+    .ant-tree-switcher-noop:after {
+      content: "." !important;
+      color: #D2D2D2;
+      font-size: 42px;
+      position: relative;
+      top: -13px;
+    }
+
+    .ant-tree-title {
+      color: #777777;
+    }
+
+    .ant-tree-checkbox-inner ::after {
+      transform: rotate(45deg) scale(1) translate(-70%, -50%) !important;
+    }
+
+    .ant-tree-switcher_close {
+      .anticon {
+        color: #D2D2D2;
+      }
+    }
+
+    .ant-tree-checkbox {
+      float: right;
+    }
+  }
+}

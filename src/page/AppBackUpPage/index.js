@@ -277,7 +277,7 @@ class index extends Component {
       },
       handleError: res => {
         if (res && res.code === 404) {
-          jumpRouter && jumpRouter( `/team/${baseInfo?.team_name}/region/${baseInfo?.region_name}/apps`)
+          jumpRouter && jumpRouter(`/team/${baseInfo?.team_name}/region/${baseInfo?.region_name}/apps`)
         }
       }
     });
@@ -420,28 +420,28 @@ class index extends Component {
 */
   jumpToAllbackup = () => {
     const { jumpRouter, baseInfo } = this.props
-    jumpRouter && jumpRouter(`/team/${baseInfo.globalUtil.getCurrTeamName()}/region/${baseInfo.globalUtil.getCurrRegionName()}/allbackup`)
+    jumpRouter && jumpRouter(`/team/${baseInfo.globalUtile.getCurrTeamName()}/region/${baseInfo.globalUtile.getCurrRegionName()}/allbackup`)
   };
   render() {
     const { baseInfo, user, dispatch, jumpRouter } = this.props
     const {
       list = [],
-      // operationPermissions: {
-      // isAccess,
-      // isAddBackup,
-      // isImportBackup,
-      // isRecoverBackup,
-      // isMoveBackup,
-      // isExportBackup,
-      // isDeleteBackup
-      // },
+      operationPermissions: {
+        isAccess,
+        isAddBackup,
+        isImportBackup,
+        isRecoverBackup,
+        isMoveBackup,
+        isExportBackup,
+        isDeleteBackup
+      },
       loading,
       deleteLoading,
       language
     } = this.state;
-    // if (!isAccess) {
-    //   return baseInfo?.roleUtil?.noPermission()
-    // }
+    if (!isAccess) {
+      return baseInfo?.roleUtil?.noPermission()
+    }
 
     const columns = [
       {
@@ -495,13 +495,8 @@ class index extends Component {
         dataIndex: 'action',
         render: (_, data) => {
           const isSuccess = data.status === 'success';
-          // const migrateSuccess = isMoveBackup && isSuccess;
-          const migrateSuccess = isSuccess;
-
-          // const exportSuccess =
-          //   data.mode === 'full-online' && isSuccess && isExportBackup;
           const exportSuccess =
-            data.mode === 'full-online' && isSuccess;
+            data.mode === 'full-online' && isSuccess && isExportBackup;
           const box = (text, fun) => {
             return (
               <a
@@ -516,14 +511,12 @@ class index extends Component {
           };
           return (
             <div>
-              {migrateSuccess && (
-                <Fragment>
-                  {box(intl.get('appBackups.table.btn.recover'), 'handleRecovery')}
-                  {box(intl.get('appBackups.table.btn.removal'), 'handleMove')}
-                </Fragment>
-              )}
+              <Fragment>
+                {isRecoverBackup && isSuccess && box(intl.get('appBackups.table.btn.recover'), 'handleRecovery')}
+                {isMoveBackup && isSuccess && box(intl.get('appBackups.table.btn.removal'), 'handleMove')}
+              </Fragment>
               {exportSuccess && box(intl.get('appBackups.table.btn.export'), 'handleExport')}
-              {box(intl.get('appBackups.table.btn.delete'), 'handleDel')}
+              {isDeleteBackup && (data.status == "failed" || isSuccess) && box(intl.get('appBackups.table.btn.delete'), 'handleDel')}
             </div>
           );
         }
@@ -536,21 +529,21 @@ class index extends Component {
           className={styles.cardStyle}
           extra={
             <div style={language ? {} : { display: 'flex' }}>
-              {/* {isAddBackup && */}
-              <Button
-                style={language ? { marginRight: 8 } : { marginRight: 8, padding: 6 }}
-                type="primary"
-                onClick={this.onBackup}
-              >
-                {intl.get('appBackups.btn.addBackups')}
-              </Button>
-              {/* } */}
+              {isAddBackup &&
+                <Button
+                  style={language ? { marginRight: 8 } : { marginRight: 8, padding: 6 }}
+                  type="primary"
+                  onClick={this.onBackup}
+                >
+                  {intl.get('appBackups.btn.addBackups')}
+                </Button>
+              }
 
-              {/* {isImportBackup && ( */}
-              <Button style={language ? { marginRight: 8 } : { marginRight: 8, padding: 6 }} onClick={this.toAdd}>
-                {intl.get('appBackups.btn.importBackups')}
-              </Button>
-              {/* )} */}
+              {isImportBackup && (
+                <Button style={language ? { marginRight: 8 } : { marginRight: 8, padding: 6 }} onClick={this.toAdd}>
+                  {intl.get('appBackups.btn.importBackups')}
+                </Button>
+              )}
             </div>
           }
         >

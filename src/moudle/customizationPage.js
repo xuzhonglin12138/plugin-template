@@ -2,10 +2,16 @@ import React, { Component } from 'react'
 import { ConfigProvider } from 'antd'
 import CustomizationPage from '../page/CustomizationPage/index'
 import intl from 'react-intl-universal';
+import dayjs from 'dayjs';
+import enUS from 'antd/locale/en_US';
+import zhCN from 'antd/locale/zh_CN';
+import 'dayjs/locale/zh-cn';
+
 const locales = {
   "en": require('../locales/en-US.json'),
   "zh": require('../locales/zh-CN.json'),
 };
+
 
 export default class index extends Component {
   constructor(props) {
@@ -13,7 +19,8 @@ export default class index extends Component {
     this.state = {
       colorPrimary: this.props?.baseInfo?.colorPrimary || '#1677ff',
       currentLocale: this.props?.baseInfo?.currentLocale || 'zh',
-      initDone: false
+      initDone: false,
+      antdLocale: zhCN
     }
   }
   componentDidMount() {
@@ -21,6 +28,17 @@ export default class index extends Component {
   }
   loadLocales() {
     const { currentLocale } = this.state
+    if (currentLocale == 'zh') {
+      this.setState({
+        antdLocale: zhCN
+      })
+      dayjs.locale('zh-cn');
+    } else {
+      this.setState({
+        antdLocale: enUS
+      })
+      dayjs.locale('en');
+    }
     intl.init({
       currentLocale: currentLocale,
       locales,
@@ -30,7 +48,7 @@ export default class index extends Component {
       });
   }
   render() {
-    const { colorPrimary, currentLocale } = this.state
+    const { colorPrimary, antdLocale } = this.state
     return (
       <ConfigProvider
         theme={{
@@ -38,7 +56,7 @@ export default class index extends Component {
             colorPrimary: colorPrimary
           }
         }}
-        locale={currentLocale == 'zh' ? 'cn' : 'en'}
+        locale={antdLocale}
       >
         {this.state.initDone &&
           <CustomizationPage {...this.props} />
