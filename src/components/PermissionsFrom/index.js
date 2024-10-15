@@ -74,7 +74,7 @@ class RoleList extends PureComponent {
     dispatch && dispatch({
       type: 'teamControl/createRole',
       payload: {
-        team_name: baseInfo?.team_name,
+        team_name: baseInfo?.team_name || baseInfo?.globalUtile.getCurrTeamName(),
         name: values.name
       },
       callback: res => {
@@ -91,7 +91,7 @@ class RoleList extends PureComponent {
     dispatch && dispatch({
       type: 'teamControl/fetchTeamRolesPermissions',
       payload: {
-        team_name: baseInfo?.team_name,
+        team_name: baseInfo?.team_name || baseInfo?.globalUtile.getCurrTeamName(),
         role_id: ID
       },
       callback: res => {
@@ -195,7 +195,7 @@ class RoleList extends PureComponent {
     dispatch && dispatch({
       type: 'teamControl/editRole',
       payload: {
-        team_name: baseInfo?.team_name,
+        team_name: baseInfo?.team_name || baseInfo?.globalUtile.getCurrTeamName(),
         role_id: rolesID,
         name: values.name
       },
@@ -214,7 +214,7 @@ class RoleList extends PureComponent {
       dispatch && dispatch({
         type: 'teamControl/updateRolePermissions',
         payload: {
-          team_name: baseInfo?.team_name,
+          team_name: baseInfo?.team_name || baseInfo?.globalUtile.getCurrTeamName(),
           role_id: values.role_id,
           permissions: values.permissions
         },

@@ -34,8 +34,8 @@ export default class RoleList extends PureComponent {
     dispatch && dispatch({
       type: 'global/fetchGroups',
       payload: {
-        team_name: baseInfo?.team_name,
-        region_name: baseInfo?.region_name
+        team_name: baseInfo?.team_name || baseInfo?.globalUtile.getCurrTeamName(),
+        region_name: baseInfo?.region_name || baseInfo?.globalUtile.getCurrRegionName()
       },
       callback: res => {
         this.setState({
@@ -62,7 +62,7 @@ export default class RoleList extends PureComponent {
     dispatch && dispatch({
       type: 'teamControl/removeRole',
       payload: {
-        team_name: baseInfo?.team_name,
+        team_name: baseInfo?.team_name || baseInfo?.globalUtile.getCurrTeamName(),
         role_id: this.state.deleteRole.ID
       },
       callback: () => {
@@ -81,7 +81,7 @@ export default class RoleList extends PureComponent {
     dispatch && dispatch({
       type: 'teamControl/fetchTeamRoles',
       payload: {
-        team_name: baseInfo?.team_name,
+        team_name: baseInfo?.team_name || baseInfo?.globalUtile.getCurrTeamName(),
       },
       callback: (res) => {
         if (res && res.status_code === 200) {

@@ -121,7 +121,6 @@ class index extends Component {
       baseInfo,
       componentData
     } = this.props;
-    console.log(componentData.data, "componentData");
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },

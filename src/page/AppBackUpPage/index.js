@@ -151,8 +151,8 @@ class index extends Component {
     dispatch && dispatch({
       type: 'application/fetchBackup',
       payload: {
-        team_name: baseInfo?.team_name,
-        group_id: baseInfo?.app_id,
+        team_name: baseInfo?.team_name || baseInfo?.globalUtile.getCurrTeamName(),
+        group_id: baseInfo?.app_id  || baseInfo?.globalUtile.getAppID(),
         page: this.state.page,
         page_size: this.state.pageSize
       },
@@ -179,7 +179,7 @@ class index extends Component {
   */
   getGroupId = () => {
     const { baseInfo } = this.props;
-    return baseInfo.app_id;
+    return baseInfo.app_id || baseInfo?.globalUtile.getComponentID();
   };
   /**
  * 处理权限信息，根据权限类型返回相应的权限信息
@@ -227,7 +227,7 @@ class index extends Component {
     dispatch && dispatch({
       type: 'application/backup',
       payload: {
-        team_name: baseInfo?.team_name,
+        team_name: baseInfo?.team_name || baseInfo?.globalUtile.getCurrTeamName(),
         group_id: this.getGroupId(),
         ...data
       },
@@ -263,8 +263,8 @@ class index extends Component {
     dispatch({
       type: 'application/fetchGroupDetail',
       payload: {
-        team_name: baseInfo?.team_name,
-        region_name: baseInfo?.region_name,
+        team_name: baseInfo?.team_name || baseInfo?.globalUtile.getCurrTeamName(),
+        region_name: baseInfo?.region_name || baseInfo?.globalUtile.getCurrRegionName(),
         group_id: baseInfo?.app_id
       },
       callback: res => {
@@ -277,7 +277,7 @@ class index extends Component {
       },
       handleError: res => {
         if (res && res.code === 404) {
-          jumpRouter && jumpRouter(`/team/${baseInfo?.team_name}/region/${baseInfo?.region_name}/apps`)
+          jumpRouter && jumpRouter(`/team/${baseInfo?.team_name || baseInfo?.globalUtile.getCurrTeamName()}/region/${baseInfo?.region_name || baseInfo?.globalUtile.getCurrRegionName()}/apps`)
         }
       }
     });
@@ -360,7 +360,7 @@ class index extends Component {
   handleExport = data => {
     const { baseInfo } = this.props;
     const exportURl = `${baseInfo.baseUrl
-      }/console/teams/${baseInfo?.team_name}/groupapp/${this.getGroupId()}/backup/export?backup_id=${data.backup_id
+      }/console/teams/${baseInfo?.team_name || baseInfo?.globalUtile.getCurrTeamName()}/groupapp/${this.getGroupId()}/backup/export?backup_id=${data.backup_id
       }`;
     window.open(exportURl);
     notification.success({
@@ -386,7 +386,7 @@ class index extends Component {
     dispatch && dispatch({
       type: 'application/delBackup',
       payload: {
-        team_name: baseInfo?.team_name,
+        team_name: baseInfo?.team_name || baseInfo?.globalUtile.getCurrTeamName(), 
         group_id: this.getGroupId(),
         backup_id: this.state.backup_id
       },
@@ -598,7 +598,7 @@ class index extends Component {
             currUser={this.props.user.currentUser}
             onOk={this.handleRecoveryBackup}
             onCancel={this.cancelRecoveryBackup}
-            propsParams={{ teamName: baseInfo?.team_name, regionName: baseInfo?.region_name }}
+            propsParams={{ teamName: baseInfo?.team_name || baseInfo.globalUtile.getCurrTeamName(), regionName: baseInfo?.region_name || baseInfo.globalUtile.getCurrRegionName() }}
             backupId={this.state.backup_id}
             group_uuid={this.state.group_uuid}
             groupId={this.getGroupId()}

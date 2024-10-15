@@ -17,6 +17,7 @@ import {
 import { UploadOutlined, PlusOutlined } from '@ant-design/icons';
 import withModifiedProps from '../../components/withModifiedProps';
 import ConfirmModal from '../../components/ConfirmModal';
+import intl from 'react-intl-universal';
 import styles from './index.less'
 
 const { TabPane } = Tabs;
@@ -45,7 +46,6 @@ class UploadComponent extends Component {
 
   componentDidMount() {
     const { cluster_info } = this.state
-    console.log(this.props,"this.props===");
     if (cluster_info.length > 0) {
       this.setState({
         regionID: cluster_info[0].region_id
@@ -221,11 +221,11 @@ class UploadComponent extends Component {
       callback: res => {
         if (res && res.status_code === 200) {
           this.fetchPakeVs()
-          notification.success({ message: '修改成功' });
+          notification.success({ message: intl.get('UploadComponent.edit.success') });
         }
       },
       handleError: err => {
-        notification.error({ message: err?.data?.msg_show || '操作失败' });
+        notification.error({ message: err?.data?.msg_show || intl.get('UploadComponent.del.success') });
         this.fetchPakeVs()
         this.setState({
           tableLoading: false
@@ -256,11 +256,11 @@ class UploadComponent extends Component {
         if (res && res.status_code === 200) {
           this.fetchPakeVs()
           this.setState({ delLangeLongin: true, delLangeVisible: false })
-          notification.success({ message: '删除成功' });
+          notification.success({ message: intl.get('UploadComponent.del.success') });
         }
       },
       handleError: err => {
-        notification.error({ message: err?.data?.msg_show || '操作失败' });
+        notification.error({ message: err?.data?.msg_show || intl.get('UploadComponent.del.error') });
         this.fetchPakeVs()
         this.setState({
           tableLoading: false,
@@ -275,7 +275,7 @@ class UploadComponent extends Component {
     fileList = fileList.slice(-1)
     fileList = fileList.filter(file => {
       if (file.response) {
-        notification.success({ message: '上传成功' });
+        notification.success({ message: intl.get('UploadComponent.upload.success') });
         this.setState({ fileInfo: file.response.bean });
         return file.response.msg === 'success';
       }
@@ -336,35 +336,35 @@ class UploadComponent extends Component {
     }
     const columns = [
       {
-        title: '版本',
+        title: intl.get('UploadComponent.upload.vs'),
         dataIndex: 'version',
         key: 'version',
         ellipsis: true,
       },
       {
-        title: (activeKey === 'net_sdk' || activeKey === 'net_runtime') ? '镜像名称' : '文件名',
+        title: (activeKey === 'net_sdk' || activeKey === 'net_runtime') ? intl.get('UploadComponent.imgnmae') : intl.get('UploadComponent.file.name'),
         dataIndex: 'file_name',
         key: 'file_name',
         render: i => <span>{i || '-'}</span>
       },
       {
-        title: '创建时间',
+        title: intl.get('UploadComponent.creat.time'),
         dataIndex: 'create_time',
         key: 'create_time',
         render: i => <span>{this.formatTimestamp(i) || '-'}</span>
       },
       {
-        title: '操作',
+        title: intl.get('UploadComponent.handle'),
         dataIndex: 'handle',
         key: 'handle',
         render: (item, row) => (
           <>
-            {row.show && <a disabled={row.first_choice} onClick={() => this.setDefault(row)}>设为默认</a>}
+            {row.show && <a disabled={row.first_choice} onClick={() => this.setDefault(row)}>{intl.get('UploadComponent.default')}</a>}
             {row.show && !row.first_choice && <span style={{ color: '#DCDFE6', margin: '0 8px' }}>|</span>}
-            {!row.first_choice && <a onClick={() => this.setHidden(row)}>{row.show ? '隐藏' : '显示'}</a>}
+            {!row.first_choice && <a onClick={() => this.setHidden(row)}>{row.show ? intl.get('UploadComponent.dispaly') : intl.get('UploadComponent.show')}</a>}
             {!row.system && !row.first_choice && <>
               <span style={{ color: '#DCDFE6', margin: '0 8px' }}>|</span>
-              <a onClick={() => this.handleOnOk(row)}>删除</a>
+              <a onClick={() => this.handleOnOk(row)}>{intl.get('UploadComponent.del')}</a>
             </>}
           </>
         )
@@ -418,7 +418,7 @@ class UploadComponent extends Component {
             ))}
           </Tabs>
         ) : (
-          <div>请先选择集群</div>
+          <div>{intl.get('UploadComponent.no.cluster')}</div>
         )}
         <Row>
           <Col span={3}>
@@ -438,7 +438,7 @@ class UploadComponent extends Component {
                   icon={<PlusOutlined />}
                   onClick={() => this.setState({ modalVisible: true })}
                 >
-                  添加版本
+                  {intl.get('UploadComponent.add.vs')}
                 </Button>
               </Row>
               <Skeleton active loading={this.state.tableLoading}>
@@ -457,27 +457,27 @@ class UploadComponent extends Component {
         </Row>
         <Modal
           centered
-          title="语言包上传"
+          title={intl.get('UploadComponent.packUpload')}
           open={modalVisible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
           destroyOnClose={true}
         >
           <Form ref={this.formRef} onFinish={this.handleOk}>
-            <Form.Item label="语言类型" name="lang" initialValue={activeKey} rules={[{ required: true }]}>
+            <Form.Item label={intl.get('UploadComponent.language.type')} name="lang" initialValue={activeKey} rules={[{ required: true }]}>
               <Input disabled />
             </Form.Item>
             <Form.Item
-              label="版本号"
+              label={intl.get('UploadComponent.vs.num')}
               name="version"
               rules={[
-                { required: true, message: '请填写版本号' },
-                { pattern: /^[a-zA-Z0-9_.-]+$/, message: '版本号格式不正确' },
-                { max: 64, message: '版本号长度不能超过64位' },
+                { required: true, message: intl.get('UploadComponent.input.vs') },
+                { pattern: /^[a-zA-Z0-9_.-]+$/, message: intl.get('UploadComponent.vsNum') },
+                { max: 64, message: intl.get('UploadComponent.vsNum.length') },
                 {
                   validator: (_, value) => {
                     return this.state.tableList.some(item => item.version === value)
-                      ? Promise.reject(new Error('版本号重复'))
+                      ? Promise.reject(new Error(intl.get('UploadComponent.vsNum.repeat')))
                       : Promise.resolve();
                   },
                 },
@@ -487,15 +487,15 @@ class UploadComponent extends Component {
             </Form.Item>
             {(activeKey === 'net_runtime' || activeKey === 'net_sdk') ? (
               <Form.Item
-                label="镜像地址"
+                label={intl.get('UploadComponent.img.add')}
                 name="file_name"
                 rules={[
-                  { required: true, message: '请填写镜像地址' },
-                  { pattern: /^[^\u4e00-\u9fa5]+$/, message: '镜像地址格式不正确' },
+                  { required: true, message: intl.get('UploadComponent.input.img') },
+                  { pattern: /^[^\u4e00-\u9fa5]+$/, message: intl.get('UploadComponent.img.format') },
                   {
                     validator: (_, value) => {
                       return this.state.tableList.some(item => item.file_name === value)
-                        ? Promise.reject(new Error('镜像地址重复'))
+                        ? Promise.reject(new Error(intl.get('UploadComponent.img.repeat')))
                         : Promise.resolve();
                     },
                   },
@@ -505,7 +505,7 @@ class UploadComponent extends Component {
               </Form.Item>
             ) : (
               <>
-                <Form.Item label="上传文件" name="file" rules={[{ required: true }]}>
+                <Form.Item label={intl.get('UploadComponent.upload.file')} name="file" rules={[{ required: true }]}>
                   <Upload
                     fileList={fileList}
                     headers={myheaders}
@@ -515,12 +515,12 @@ class UploadComponent extends Component {
                     accept='.jar,.gz'
                     data={{ region_id: this.state.regionID, enterprise_id: baseInfo?.globalUtile.getCurrEnterpriseId() }}
                   >
-                    <Button icon={<UploadOutlined />}>上传文件</Button>
-                    <div className={styles.uploadtext}>仅支持上传 jar, tar.gz 格式的文件</div>
+                    <Button icon={<UploadOutlined />}>{intl.get('UploadComponent.upload.file')}</Button>
+                    <div className={styles.uploadtext}>{intl.get('UploadComponent.upload.repeat')}</div>
                   </Upload>
                 </Form.Item>
                 {fileInfo.file_name && (
-                  <Form.Item label="文件名" name="file_name" initialValue={fileInfo.file_name}>
+                  <Form.Item label={intl.get('UploadComponent.file')} name="file_name" initialValue={fileInfo.file_name}>
                     <Input disabled />
                   </Form.Item>
                 )}
@@ -530,9 +530,9 @@ class UploadComponent extends Component {
         </Modal>
         {this.state.delLangeVisible && (
           <ConfirmModal
-            title="删除语言版本"
-            subDesc="删除后将无法恢复"
-            desc={`确定删除${this.state.delLangeVisible.lang}语言${this.state.delLangeVisible.version}版本吗？`}
+            title={intl.get('UploadComponent.del.vs')}
+            subDesc={intl.get('UploadComponent.del.no')}
+            desc={`${intl.get('UploadComponent.del.yes')}${this.state.delLangeVisible.lang}${intl.get('UploadComponent.language')}${this.state.delLangeVisible.version}${intl.get('UploadComponent.ma')}`}
             onOk={this.confirm}
             onCancel={this.handleOnCancel}
           />

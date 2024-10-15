@@ -73,7 +73,7 @@ export default class index extends Component {
     dispatch && dispatch({
       type: 'application/migrateApp',
       payload: {
-        team_name: baseInfo?.team_name,
+        team_name: baseInfo?.team_name || baseInfo?.globalUtile.getCurrTeamName(),
         region: this.state.regionName,
         team: this.state.teamsName,
         backup_id: this.props.backupId,
@@ -100,7 +100,7 @@ export default class index extends Component {
     dispatch && dispatch({
       type: 'application/queryMigrateApp',
       payload: {
-        team_name: baseInfo?.team_name,
+        team_name: baseInfo?.team_name || baseInfo?.globalUtile.getCurrTeamName(),
         restore_id: this.state.restore_id,
         group_id: this.props.groupId
       },

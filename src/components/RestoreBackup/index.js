@@ -24,7 +24,7 @@ export default class index extends Component {
     dispatch({
       type: 'application/queryRestoreState',
       payload: {
-        team_name: baseInfo?.team_name,
+        team_name: baseInfo?.team_name || baseInfo?.globalUtile.getCurrTeamName(),
         group_id: this.props.groupId,
         group_uuid: this.props.group_uuid
       },
@@ -74,7 +74,7 @@ export default class index extends Component {
     dispatch({
       type: 'application/delRestore',
       payload: {
-        team_name: baseInfo?.team_name,
+        team_name: baseInfo?.team_name || baseInfo?.globalUtile.getCurrTeamName(),
         group_id: this.props.groupId,
         new_group_id: this.state.new_group_id
       },
