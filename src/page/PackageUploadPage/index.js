@@ -175,7 +175,7 @@ class UploadComponent extends Component {
 
   tabsChange = (key) => {
     this.setState({
-      activeKey: key,
+      activeKey: 'openJDK',
     }, () => {
       this.loadPutCluster();
       setTimeout(() => {
