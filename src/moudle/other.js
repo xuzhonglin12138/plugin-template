@@ -15,8 +15,8 @@ export default class index extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      colorPrimary: this.props?.colorPrimary || '#1677ff',
-      currentLocale: this.props?.currentLocale || 'zh',
+      colorPrimary: this.props?.baseInfo?.colorPrimary || '#1677ff',
+      currentLocale: this.props?.baseInfo?.currentLocale || 'zh',
       initDone: false,
       antdLocale: zhCN
     }

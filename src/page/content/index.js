@@ -14,9 +14,7 @@ import styles from './index.less';
   render() {
     return (
       <div className={styles.Separate_example_root}>
-        <h1>======团队和组件========</h1>
-        <h5>当前是组件</h5>
-        <p>团队和组件团队和组件团队和组件团队和组件团队和组件团队和组件团队和组件</p>
+        管理端 或 只有一端
       </div>
     )
   }
